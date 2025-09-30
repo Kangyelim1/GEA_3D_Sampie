@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,17 +27,32 @@ public class PlayerController : MonoBehaviour
 
     public CinemacineSwitcher cS;
 
+    public int maxHP = 100;
+    private int currentHp;
+
+    public Slider hpSlider;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
 
         pov = virtualCam.GetCinemachineComponent<CinemachinePOV>();
+
+        currentHp = maxHP;
+
+        hpSlider.value = 1f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            pov.m_HorizontalAxis.Value = transform.eulerAngles.y;
+            pov.m_VerticalAxis.Value = 0f;
+        }
+
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
         {
@@ -56,8 +72,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 move = (camForward * z + camRight * x).normalized;
 
-       if(!cS.usingFreeLook )
-        controller.Move(move * speed * Time.deltaTime);
+        if (!cS.usingFreeLook)
+            controller.Move(move * speed * Time.deltaTime);
 
         float camerayaw = pov.m_HorizontalAxis.Value;
         Quaternion targetRot = Quaternion.Euler(0f, camerayaw, 0f);
@@ -86,5 +102,20 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y = -2f;
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHp -= damage;
+        hpSlider.value = (float)currentHp / maxHP;
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }
