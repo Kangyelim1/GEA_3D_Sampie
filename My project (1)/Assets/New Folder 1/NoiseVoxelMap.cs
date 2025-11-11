@@ -53,9 +53,43 @@ public class NoiseVoxelMap : MonoBehaviour
     // 공통 블록 배치 함수
     private void Place(GameObject prefab, int x, int y, int z)
     {
-        if (prefab == null) return;
 
-        var go = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity, transform);
-        go.name = $"{prefab.name}{x}{y}_{z}";
+        //var go = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity, transform);
+        ///go.name = $"{prefab.name}{x}{y}_{z}";
+
+        if (prefab == dirtPrefab)
+        {
+           var go = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity, transform);
+              go.name = $"Dirt_{x}_{y}_{z}";
+
+                var b = go.GetComponent<Block>() ?? go.AddComponent<Block>();
+                b.type = BlockType.Dirt;
+                b.maxHP = 3;
+                b.dropCount = 1;
+                b.mineable = true;
+        }
+        else if (prefab == grassPrefab)
+        {
+             var go = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity, transform);
+              go.name = $"Grass_{x}_{y}_{z}";
+
+              var b = go.GetComponent<Block>() ?? go.AddComponent<Block>();
+                   b.type = BlockType.Grass;
+                    b.maxHP = 3;       
+                     b.dropCount = 1;
+                       b.mineable = true;
+        }
+        else if (prefab == waterPrefab)
+        {
+            var go = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity, transform);
+             go.name = $"Water_{x}_{y}_{z}";
+
+             var b = go.GetComponent<Block>() ?? go.AddComponent<Block>();
+                b.type = BlockType.Water;
+                b.maxHP = 3;
+                b.dropCount = 1;
+                b.mineable = true;
+        }
+
     }
 }
