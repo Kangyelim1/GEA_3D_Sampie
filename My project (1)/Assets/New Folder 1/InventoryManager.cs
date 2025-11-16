@@ -1,46 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
-    // ğŸ’¡ Inspectorì—ì„œ ì—°ê²°í•  ë‹¨ ë‘ ê°€ì§€ í•„ìˆ˜ ìš”ì†Œ
-    public GameObject slotPrefab;       // SlotItemPrefab ìŠ¤í¬ë¦½íŠ¸ê°€ ë¶™ì€ UI í”„ë¦¬íŒ¹
-    public Transform inventoryContent;   // UI ìŠ¬ë¡¯ë“¤ì´ ìƒì„±ë  ë¶€ëª¨ íŒ¨ë„ (Transform)
-    
-    // ğŸ’¡ ì•„ì´í…œ íƒ€ì…ë³„ ì•„ì´ì½˜ì„ ê´€ë¦¬í•˜ëŠ” ë°°ì—´ (Inspectorì—ì„œ BlockType ìˆœì„œëŒ€ë¡œ ì—°ê²°)
-    public Sprite[] itemSprites; 
+    public GameObject slotPrefab;       // SlotItemPrefab ½ºÅ©¸³Æ®°¡ ºÙÀº ÇÁ¸®ÆÕ
+    public Transform inventoryContent;   // ½½·ÔµéÀÌ »ı¼ºµÉ ºÎ¸ğ Transform (Panel)
+    public Sprite[] itemSprites;        // BlockType ¼ø¼­´ë·Î ¾ÆÀÌÄÜ Sprite ¿¬°á
+                                        // Start is called before the first frame update
 
-    // ì¸ë²¤í† ë¦¬ ë°ì´í„°ë¥¼ ë°›ì•„ UIë¥¼ ê°±ì‹ í•˜ëŠ” í•¨ìˆ˜
-    public void UpdateInventory(Inventory myInven) 
+    // ÀÎº¥Åä¸® µ¥ÀÌÅÍ¸¦ ¹Ş¾Æ UI¸¦ °»½ÅÇÏ´Â ÇÔ¼ö (Ã¤Áı ½Ã È£Ãâ)
+    public void UpdateInventory(Inventory myInven)
     {
-        // 1. ê¸°ì¡´ ìŠ¬ë¡¯ ì´ˆê¸°í™”
-        foreach (Transform child in inventoryContent) 
+        // 1. ±âÁ¸ ½½·Ô ÃÊ±âÈ­ (»õ·Î°íÄ§À» À§ÇØ ¸ğµÎ »èÁ¦)
+        foreach (Transform child in inventoryContent)
         {
             Destroy(child.gameObject);
         }
 
-        // 2. ì¸ë²¤í† ë¦¬ ë°ì´í„° íƒìƒ‰ ë° UI ìƒì„±
-        foreach (var item in myInven.items) 
+        // 2. ÀÎº¥Åä¸® µ¥ÀÌÅÍ ÀüÃ¼ Å½»ö ¹× UI »ı¼º
+        foreach (var item in myInven.items)
         {
-            BlockType itemType = item.Key; // ì•„ì´í…œ íƒ€ì… (Enum)
-            int itemCount = item.Value;    // ì•„ì´í…œ ê°œìˆ˜
+            BlockType itemType = item.Key;
+            int itemCount = item.Value;
 
-            if (itemCount > 0) 
+            if (itemCount > 0)
             {
-                // ìŠ¬ë¡¯ ìƒì„± ë° ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+                // ½½·Ô »ı¼º ¹× ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
                 GameObject newSlot = Instantiate(slotPrefab, inventoryContent);
                 SlotItemPrefab slotUI = newSlot.GetComponent<SlotItemPrefab>();
-                
-                // ìŠ¤í”„ë¼ì´íŠ¸ ê°€ì ¸ì˜¤ê¸°: Enum ê°’ì„ ë°°ì—´ì˜ Indexë¡œ ì‚¬ìš© (ê°€ì¥ ê°„ë‹¨í•œ ë§¤í•‘ ë°©ë²•)
-                // (ì£¼ì˜: BlockType enum ê°’ê³¼ itemSprites ë°°ì—´ ìˆœì„œê°€ ì¼ì¹˜í•´ì•¼ í•¨)
+
+                // ½ºÇÁ¶óÀÌÆ® °¡Á®¿À±â: Enum °ªÀ» ¹è¿­ÀÇ Index·Î »ç¿ë
                 Sprite itemSprite = itemSprites[(int)itemType];
-                
-                string itemText = itemCount.ToString();
-                
-                // UI ì—…ë°ì´íŠ¸
-                slotUI.ItemSetting(itemSprite, itemText);
+
+                // UI ¾÷µ¥ÀÌÆ®
+                slotUI.ItemSetting(itemSprite, itemCount.ToString());
+
+                // ÈùÆ®¿¡ µû¸¥ switch ·ÎÁ÷ (Ãß°¡ Ã³¸®°¡ ÇÊ¿äÇÒ °æ¿ì »ç¿ë)
+                // switch (itemType) { ... }
             }
         }
     }

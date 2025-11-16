@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerHarvester : MonoBehaviour
 {
-   public float rayDistance = 5f;        // 채집 가능 거리
+    public Inventory myInventory;
+    public InventoryManager inventoryManager;
+
+    public float rayDistance = 5f;        // 채집 가능 거리
     public LayerMask hitMask = ~0;      // 가능한 한 레이어 전부 다 (일단)
     public int toolDamage = 1;          // 타격 데미지
     public float hitCooldown = 0.15f;   // 연타 간격
@@ -35,5 +38,22 @@ public class PlayerHarvester : MonoBehaviour
                 }
             }
         }
+    }
+
+    void HarvestBlock(BlockType type) // 파괴된 블록의 타입 정보를 받음
+    {
+        int count = 1; // 획득 개수 (예시)
+
+        // ----------------------------------------------------
+        // 1. 📦 데이터에 아이템 추가 (교수님 힌트의 Inventory.Add 호출)
+        // ----------------------------------------------------
+        myInventory.Add(type, count);
+
+        // ----------------------------------------------------
+        // 2. 🔄 UI 갱신 요청 (마지막 코드의 위치! 이것이 화면에 나타나게 함)
+        // ----------------------------------------------------
+        inventoryManager.UpdateInventory(myInventory);
+
+        // ... (나머지 로직: 블록 오브젝트 삭제, 이펙트 재생 등)
     }
 }
