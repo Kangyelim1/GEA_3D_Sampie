@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerHarvester : MonoBehaviour
 {
-    public Inventory myInventory;
-    public InventoryManager inventoryManager;
-
     public float rayDistance = 5f;        // 채집 가능 거리
     public LayerMask hitMask = ~0;      // 가능한 한 레이어 전부 다 (일단)
     public int toolDamage = 1;          // 타격 데미지
@@ -15,16 +12,22 @@ public class PlayerHarvester : MonoBehaviour
     private float _nextHitTime;
     private Camera _cam;
     public Inventory inventory;         // 플레이어 인벤(없으면 자동 부착)
+    InventoryUI invenUI;
+    public GameObject selectedBlock;
 
     void Awake()
     {
         _cam = Camera.main;
         if (inventory == null) inventory = gameObject.AddComponent<Inventory>();
+        invenUI = FindObjectOfType<InventoryUI>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButton(0) && Time.time >= _nextHitTime)
+        if(invenUI.selectedIndex < 0)
+        {
+            selectedBlock.transform.localScale = Vector3.zero;
+            if (Input.GetMouseButton(0) && Time.time >= _nextHitTime)
         {
             _nextHitTime = Time.time + hitCooldown;
 
@@ -37,23 +40,50 @@ public class PlayerHarvester : MonoBehaviour
                     block.Hit(toolDamage, inventory);
                 }
             }
+
+
+        }
+        }
+        else
+        {
+            Ray rayDebug = _cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            if (Physics.Raycast(rayDebug, out var hitDebug, rayDistance, hitMask, QueryTriggerInteraction.Ignore))
+            {
+                Vector3Int placePos = AdjacentCellOnHitFace(hitDebug);
+                selectedBlock.transform.localScale = Vector3.one;
+                selectedBlock.transform.position = placePos;
+                selectedBlock.transform.rotation = Quaternion.identity;
+            }
+            
+            else
+            {
+                selectedBlock.transform.localScale = Vector3.zero;
+            }
+            
+
+           if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray =_cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+                if(Physics.Raycast(ray, out var hit, rayDistance, hitMask, QueryTriggerInteraction.Ignore))
+                {
+                    Vector3Int placePos = AdjacentCellOnHitFace(hit);
+
+                    BlockType selected = invenUI.GetInventorySlot();
+                    if(inventory.Consume(selected, 1))
+                    {
+                        FindObjectOfType<NoiseVoxelMap>().PlaceTile(placePos, selected);
+                    }
+                }
+            }
         }
     }
 
-    void HarvestBlock(BlockType type) // 파괴된 블록의 타입 정보를 받음
+    static Vector3Int AdjacentCellOnHitFace(in RaycastHit hit)
     {
-        int count = 1; // 획득 개수 (예시)
-
-        // ----------------------------------------------------
-        // 1. 📦 데이터에 아이템 추가 (교수님 힌트의 Inventory.Add 호출)
-        // ----------------------------------------------------
-        myInventory.Add(type, count);
-
-        // ----------------------------------------------------
-        // 2. 🔄 UI 갱신 요청 (마지막 코드의 위치! 이것이 화면에 나타나게 함)
-        // ----------------------------------------------------
-        inventoryManager.UpdateInventory(myInventory);
-
-        // ... (나머지 로직: 블록 오브젝트 삭제, 이펙트 재생 등)
+        Vector3 baseCenter = hit.collider.transform.position;
+        Vector3 adjCenter = baseCenter + hit.normal;
+        return Vector3Int.RoundToInt(adjCenter);
     }
+
+    
 }

@@ -92,4 +92,22 @@ public class NoiseVoxelMap : MonoBehaviour
         }
 
     }
+
+    public void PlaceTile(Vector3Int pos, BlockType type)
+    {
+        switch(type)
+        {
+            case BlockType.Dirt:
+            Place(dirtPrefab,pos.x, pos.y, pos.z);
+            break;
+            case BlockType.Grass:
+            Place(grassPrefab,pos.x, pos.y, pos.z);
+            break;
+            case BlockType.Water:
+            Place(waterPrefab,pos.x, pos.y, pos.z);
+            break;
+        }
+    }
+
+    
 }
