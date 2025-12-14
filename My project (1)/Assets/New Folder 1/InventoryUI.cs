@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-
+   
     public Sprite dirtSprite;
     public Sprite diamondSprite;
     public Sprite grassSprite;
     public Sprite waterSprite;
     public Sprite cloudSprite;
     public Sprite axeSprite;
+    public Sprite ShovelsSprite;
+    public Sprite grainySprite;
 
     public List<Transform> Slot = new List<Transform>();
     public GameObject SlotItem;
@@ -50,6 +52,12 @@ public class InventoryUI : MonoBehaviour
                 case ItemType.Axe:
                 sItem.ItemSetting(axeSprite, "x" + item.Value.ToString(), item.Key);
                 break;
+                case ItemType.Shovels:
+                    sItem.ItemSetting(ShovelsSprite, "x" + item.Value.ToString(), item.Key);
+                    break;
+                case ItemType.grainy:
+                    sItem.ItemSetting(grainySprite, "x" + item.Value.ToString(), item.Key);
+                    break;
             }
             idx++;
         }

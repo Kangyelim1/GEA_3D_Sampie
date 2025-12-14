@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7604078912799263900}
   - component: {fileID: 4384362995290132625}
   - component: {fileID: 6628468467231653045}
+  - component: {fileID: 5733790843369068218}
   m_Layer: 5
   m_Name: slotitem
   m_TagString: Untagged
@@ -92,6 +93,23 @@ MonoBehaviour:
   itemImage: {fileID: 4384362995290132625}
   itemText: {fileID: 8466922533610555007}
   blockType: 0
+  craftingPanel: {fileID: 0}
+--- !u!114 &5733790843369068218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828449423972273084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d59c2884d178d54f93b1d06793dd245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemImage: {fileID: 0}
+  itemText: {fileID: 0}
+  blockType: 0
+  craftingPanel: {fileID: 0}
 --- !u!1 &7322711961582488376
 GameObject:
   m_ObjectHideFlags: 0

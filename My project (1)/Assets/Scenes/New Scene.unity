@@ -579,7 +579,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.06, z: 0}
 --- !u!4 &248515085
 Transform:
   m_ObjectHideFlags: 0
@@ -1245,6 +1245,8 @@ MonoBehaviour:
   waterSprite: {fileID: 21300000, guid: b6bfc357f69920a4c9055e6d59a81653, type: 3}
   cloudSprite: {fileID: 21300000, guid: b6bfc357f69920a4c9055e6d59a81653, type: 3}
   axeSprite: {fileID: 21300000, guid: fe111f242c134694899070903acd9a50, type: 3}
+  ShovelsSprite: {fileID: 21300000, guid: 84877d6d3b6d4f04eab470bc1bac3129, type: 3}
+  grainySprite: {fileID: 21300000, guid: a8cb1cf0faa0791489238f29693e4601, type: 3}
   Slot:
   - {fileID: 1623008685}
   - {fileID: 1754750575}
@@ -1423,7 +1425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1264029050
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2261,6 +2263,8 @@ MonoBehaviour:
   inventory: {fileID: 248515087}
   recipeList:
   - {fileID: 11400000, guid: e7e17b8230c59124bbda40fbcee297c8, type: 2}
+  - {fileID: 11400000, guid: fa69076fa331ea54d82e4e6d33a05c74, type: 2}
+  - {fileID: 11400000, guid: fa69076fa331ea54d82e4e6d33a05c74, type: 2}
   root: {fileID: 1264029049}
   plannedText: {fileID: 1035435695}
   clearButton: {fileID: 1835909102}

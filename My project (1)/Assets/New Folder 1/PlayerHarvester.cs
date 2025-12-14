@@ -24,6 +24,7 @@ public class PlayerHarvester : MonoBehaviour
 
     void Update()
     {
+
         if(invenUI.selectedIndex < 0)
         {
             selectedBlock.transform.localScale = Vector3.zero;
